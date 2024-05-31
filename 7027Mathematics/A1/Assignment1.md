@@ -14,5 +14,5 @@
 \frac12(x-1)^2+2,&x\in[1,3]\\
 \frac12x+\frac72,&x\in(3,5)
 \end{cases}$$  
-Then we channge the places of $x$ and  $f(x)$  and then we can plot the graph of $f^{-1}(x)$ in Jupyterbook.
-     
+Then we channge the places of $x$ and  $f(x)$  and then we can plot the graph of $f^{-1}(x)$ in Jupyterbook.  
+![Assignment1 Question2-(c)'s graph](C:\Users\secar\OneDrive\UOA\2024T2\7027Mathematics\A1\Assignment1 Question2-(c)'s graph.png)
