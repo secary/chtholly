@@ -5,14 +5,14 @@
 * 文件夹命名采用课程代码+课名形式，课名不需要全称。例：***7210CS***.
 
 * Follow standard conventions of commit messages, like  
-***Title***`(In the first line)`  
-***Description of Changes***`(In the second line)`  
-***Issue  <u>#Codename</u>***`(The kast line, codenames in the table below)`
+***Title*** `(In the first line)`  
+***Description of Changes*** `(In the second line)`  
+***Issue  <u>#Codename</u>*** `(The kast line, codenames in the table below)`
 
 * Commit message 采用标准写法,如下  
-***标题***`第一行`  
-***更改变动描述***`第二行`  
-***事件代号***`最后一行，代号在下方表里`
+***标题*** `第一行`  
+***更改变动描述*** `第二行`  
+***事件代号*** `最后一行，代号在下方表里`
 
 * Issue Codenames  
 
