@@ -23,4 +23,4 @@
 |Bug fix in ipynb of math|#Mutsuki|#0723
 |Readme update| #Shiranui |#0621
 |Assignment Finalised|#Yamato|#0808|
-|Personal bug fix|#Ukuru|#0515|
+|Personal bug fix|#Uguru|#0515|
