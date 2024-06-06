@@ -1,0 +1,49 @@
+---
+title: "DTPrac3"
+author: "secary"
+date: "2024-06-05"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,warning = FALSE,message = FALSE)
+```
+
+## R Markdown
+
+
+```{r}
+library(tidyverse)
+library(inspectdf)
+```
+
+```{r}
+data(diamonds)
+diamond_df <- diamonds
+diamonds
+```
+
+```{r}
+inspect_na(diamonds)
+```
+```{r}
+inspect_num(diamonds)
+```
+
+```{r}
+unique(diamonds$cut)
+count(diamonds,cut)
+```
+```{r}
+ggplot(diamonds,aes(x=cut,y=price))+
+  geom_point()
+```
+```{r}
+ggplot(diamonds,aes(x=color,y=price))+
+  geom_point()
+```
+```{r}
+library(ggplot2)
+ggplot(diamonds,aes(y=price,fill=cut))+
+  geom_boxplot()
+```

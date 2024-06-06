@@ -1,0 +1,91 @@
+---
+title: "Title"
+author: "Your name"
+date: "Date you finished your assignment"
+output:
+  pdf_document: default
+---
+
+# Setup
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message=FALSE)
+```
+
+```{r }
+#Load the required packages
+```
+
+# Q1. Loading the data
+
+```{r}
+# Your student number goes here
+ysn = 1000
+# Calculate your student number modulo 3
+filenum <- ysn %% 3
+filenum
+filename <- paste0("./data/afl_",filenum,".csv")
+filename
+
+# Read in the data
+
+# Display the first 10 lines of the data
+```
+
+# Q2. The dimensions of the data set
+
+```{r}
+#
+```
+
+[Some text describing what your R code tells you.]
+
+
+# Q3. Random permutation of the rows
+
+```{r}
+#
+```
+
+# Q4. Adding an extra column of row numbers
+```{r}
+#
+```
+
+# Q5 Data cleaning
+## Q5(a)
+```{r}
+#
+```
+
+## Q5(b)
+```{r}
+#
+```
+
+## Q5(c)
+```{r}
+#
+```
+
+# Q6
+
+etc
+
+# Q7. Identifying data types
+
+* variable1: type and justification
+
+* variable2: type and justification
+
+* etc
+
+# Q8. Taming the data
+
+etc.
+
+etc.
+
+etc.
+
+etc.
