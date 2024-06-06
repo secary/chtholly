@@ -18,7 +18,9 @@
 
 | Issue    | Codename |Code Number|
 | :-----------: | :-----------: |:-----------: |
-| Assignment bug fix| #Abukuma|#0316
-| Readme update| #Shiranui |#0621
+|Bug fix in ipynb of cs| #Abukuma|#0316
+|Bug fix in R|#Yona|#0929
+|Bug fix in ipynb of math|#Mutsuki|#0723
+|Readme update| #Shiranui |#0621
 |Assignment Finalised|#Yamato|#0808|
 |Personal bug fix|#Ukuru|#0515|
