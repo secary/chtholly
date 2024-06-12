@@ -67,7 +67,17 @@ afl1$round<-str_replace(afl1$round,"Round","")
 afl1
 
 afl1<-afl1 %>%
-  mutate("home"=is.na(str_match(afl1$details,"away")))
+  mutate("home"=is.na(str_match(afl1$details,"away"))[,1])
+afl1
+
+afl1<-mutate(afl1,goals=str_match(afl1$details,"(\\d+) goals and (\\d+)")[,2])
+afl1<-mutate(afl1,behinds=str_match(afl1$details,"(\\d+) goals and (\\d+)")[,3])
+afl1
+
+afl1<-mutate(afl1,details=NULL)
+afl1
+
+afl1<-mutate(afl1,TidyRowNum=(1:374), .after=RowNum)
 afl1
 
 

@@ -64,9 +64,9 @@ afl1
 # Q4. Adding an extra column of row numbers
 ```{r}
 # Use mutate to add a column at the far right of the data set
-afl1<-mutate(afl1,Rownumber=c(1:18))
+afl1<-mutate(afl1,RowNum=c(1:18))
 # Then use relocate to move the new column to the far left
-afl1<-relocate(afl1,"Rownumber", .before = Team)
+afl1<-relocate(afl1,"RowNum", .before = Team)
 afl1
 ```
 
@@ -115,13 +115,29 @@ afl1
 afl1$round<-str_replace(afl1$round,"Round","")
 afl1
 ```
-## Q6(C)
+## Q6(c)
 ```{r}
 afl1<-afl1 %>%
-  mutate("home"=is.na(str_match(afl1$details,"away")))
+  mutate("home"=is.na(str_match(afl1$details,"away"))[,1])
 afl1
-
 ```
+## Q6(d)
+```{r}
+afl1<-mutate(afl1,goals=str_match(afl1$details,"(\\d+) goals and (\\d+)")[,2])
+afl1<-mutate(afl1,behinds=str_match(afl1$details,"(\\d+) goals and (\\d+)")[,3])
+afl1
+```
+## Q6(e)
+```{r}
+afl1<-mutate(afl1,details=NULL)
+afl1
+```
+## Q6(f)
+```{r}
+afl1<-mutate(afl1,TidyRowNum=(1:374), .after=RowNum)
+afl1
+```
+
 
 
 
