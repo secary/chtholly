@@ -177,10 +177,10 @@ afl2<-sample_n(afl1,200)
 afl2
 ```
 
-
-# Q10(a) Insert two new columns
+# Q10
+## Q10(a) Insert two new columns
 ```{r}
-# Calculate the score and accuracy and insert the new colunms
+# Calculate the score and accuracy and insert the new columns
 afl2<-mutate(afl2,score=goals*6+behinds)
 afl2<-mutate(afl2,accuracy=goals/(goals+behinds))
 afl2
@@ -191,7 +191,7 @@ The score's type is incorrect, it should be integers and the accuracy's is corre
 afl2$score<-as.integer(afl2$score)
 afl2
 ```
-# Q10(b) 
+## Q10(b) 
 ```{r}
 summarise(group_by(afl2,Team),mean_score=mean(score))
 summarise(group_by(afl2,Team),mean_accuracy=mean(accuracy))
@@ -201,18 +201,20 @@ summarise(group_by(afl2,Team),mean_accuracy=mean(accuracy))
 * iii. Fremantle	0.5674431	
 * iv. Collingwood	0.4771722	
 
-# Q11(a)
+# Q11
+## Q11(a)
 ```{r}
 ggplot(afl2,aes(home,score,fill=home))+
   geom_boxplot()
 ```
 
-# Q11(b)
+## Q11(b)
 ```{r}
 ggplot(afl2,aes(home,accuracy,fill=home))+
   geom_boxplot()
 ```
-The home games have better probabilities to win more scores but the accuracy between home and away is very close. With the graph we can see the average line of home score is higher and the top and bottom is higher than away's. But when it comes to the accuracy graph their posistion is much closer.
+The home games have better probabilities to win more scores but the accuracy between home and away is very close. With the graph we can see the average line of home score is higher and the top and bottom is higher than away's. But when it comes to the accuracy graph their position is much closer.
+
 # Q12
 ```{r}
 afl_home<-filter(afl2,home==TRUE)
@@ -220,6 +222,7 @@ afl_away<-filter(afl2,home==FALSE)
 afl_home
 afl_away
 ```
+
 # Q13
 ```{r}
 inspect_num(afl_home)
