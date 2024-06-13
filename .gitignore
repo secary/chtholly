@@ -5,5 +5,4 @@
 *.tex
 *.log
 .gitignore
-
 .Rproj.user
