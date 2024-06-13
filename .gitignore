@@ -4,6 +4,6 @@
 *.Ruserdata
 *.tex
 *.log
-
+.gitignore
 
 .Rproj.user
