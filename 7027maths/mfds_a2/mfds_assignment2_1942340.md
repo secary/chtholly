@@ -4,15 +4,22 @@
 ### Dongju Ma
 
 ## Q1
-###  (a)
+* (a)
 To arrange the labourers into 5 groups of 3, we should pick 3 random guys from the origin 15 people, then 3 random guys from the 12 people left, etc. So the expression of this process should be:
 $$
 \frac{\binom{15}{3} \times \binom{12}{3} \times \binom{9}{3}\times \binom{6}{3} \times \binom{3}{3} }{5!}
 $$
-which equals 1401400.
-
+which equals 1401400.  
 And the each team should have different task with others, we should multiple the result before with all the permutions the assign ways have, which is 
 $$
 1401400\times5!\times4!\times3!\times2!\times1!
 $$
 which equals 16816800
+
+* (b)
+Now they would be performing the same tasks, we should just divide the labourers to 5 diffrent groups. The permution in each group doesn't count and the permution of groups also doesn't count, so we can just use combination of 15 taken 3 to times tne combination of 15-3=12 taken 3 and so on till  the combination of 3 taken 3. Which is important is because of the permution of th3 combinations also doesn't count so we would divide by 5!  
+The expression is:
+$$
+\frac{\binom{15}{3} \times \binom{12}{3} \times \binom{9}{3}\times \binom{6}{3} \times \binom{3}{3} }{5!}
+$$
+which equals 1401400.
