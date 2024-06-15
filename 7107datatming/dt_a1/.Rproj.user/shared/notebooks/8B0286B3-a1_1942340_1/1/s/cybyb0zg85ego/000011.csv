@@ -1,3 +1,0 @@
-"0","afl1<-mutate(afl1,goals=str_match(afl1$details,""(\\d) goals""))"
-"0","afl1<-mutate(afl1,behinds=str_match(afl1$details,""(\\d) behinds""))"
-"0","afl1"

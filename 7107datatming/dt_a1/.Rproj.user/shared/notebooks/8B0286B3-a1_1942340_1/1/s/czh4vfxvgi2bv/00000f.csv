@@ -1,3 +1,0 @@
-"0","afl1<-afl1 %>%"
-"0","  mutate(""home""=is.na(str_match(afl1$details,""away"")))"
-"0","afl1"
