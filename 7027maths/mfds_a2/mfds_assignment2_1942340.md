@@ -23,3 +23,40 @@ $$
 \frac{\binom{15}{3} \times \binom{12}{3} \times \binom{9}{3}\times \binom{6}{3} \times \binom{3}{3} }{5!}
 $$
 which equals 1401400.
+
+## Q2
+* (a)  
+The Venn diagram is below:  
+![Venn diagram](Venn_diagram_q2.png)
+
+* (b)  
+* i. The probability of who uses Reddit is 
+$$
+\frac{12+27+35+19}{14+17+19+35+23+28+27+12}=\frac{93}{175}\approx0.554
+$$
+* ii The probability of who uses at least one platform is
+$$
+\frac{175-14}{175}=\frac{23}{25}=0.92
+$$
+
+* iii Suppose the probability of who doesn't uses Instagram is $P(A)$, the probability of who uses TikTok is $P(B)$. So who does not use Instagram given that they use TikTok is $P(A|B)$
+So we can learn
+$$
+P(A|B) = \frac{P(A \cap B)}{P(B)} = \frac{28+27}{28+27+35+23} \approx 0.487 
+$$
+
+## Q3
+* (a) The probability of five are all diamonds is
+$$
+\frac{C(13,5)}{C(52,5)} \approx 0.000495
+$$
+
+* (b) The probability of five are the same suit is
+$$
+\frac{C(13,5)\times C(4,1)}{C(52,5)} \approx 0.00198
+$$
+
+* (c) There are only 4 circumstances of Royal Flush happening, which is the cards with 4 different suits. So, the probability would be:
+$$
+\frac{4}{C(52,5)} \approx 1.54\times10^{-6}
+$$
