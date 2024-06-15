@@ -1,7 +1,7 @@
 ---
 title: "Data Taming Assignment 1"
 author: "Dongju Ma"
-date: "12/06/2024"
+date: "15/06/2024"
 output:
   pdf_document: default
 ---
@@ -32,7 +32,7 @@ filename
 # Read in the data
 afl<-read_csv("./data/afl_2.csv")
 # Display the first 10 lines of the data
-head(afl,10)
+afl
 ```
 
 # Q2. The dimensions of the data set
@@ -219,7 +219,7 @@ summarise(group_by(afl2,Team),mean_accuracy=mean(accuracy))
 * iv. Collingwood	0.4771722
 
 # Q11. Box plots
-## Q11(a) .Box plot of score and home
+## Q11.(a) Box plot of score and home
 
 ```{r}
 # Plot the data of home and score
@@ -272,34 +272,5 @@ ggplot(afl_away, aes(x = accuracy, y = score)) +
 The calculation of score is to multiple goals numbers with 6 and behinds just 1 time and the accuracy represent the proportion of goals, which infers that with higher accuracy come to higher goals. And the higher goals change into higher scores.
 So I choose the accuracy to be the independent variable and the score to be predictor.
 
-# Q15
-As the scatter plots shown, when the accuracy data becomes higher, there are higher possibilities to win a high score. And it is similar for both home and away teams.
-
-```{r}
-# Summarize the data sets
-inspect_num(afl_home)
-inspect_num(afl_away)
-```
-
-The average score of home games is 94.0510204 while the average accuracy is 0.5218593. Also the average score of away games 86.9803922	while the average accuracy is 86.9803922. 
-The data does support the claim.
-
-# Q14. Scatter plots
-
-```{r}
-# Plot the scatter plot of accuracy and score in afl_home
-ggplot(afl_home, aes(x = accuracy, y = score)) + 
-  geom_point() + 
-  geom_smooth(method="lm")
-# Plot the scatter plot of accuracy and score in afl_away
-ggplot(afl_away, aes(x = accuracy, y = score)) + 
-  geom_point() + 
-  geom_smooth(method="lm")
-```
-
-The calculation of score is to multiple goals numbers with 6 and behinds just 1 time and the accuracy represent the proportion of goals, which infers that with higher accuracy come to higher goals. And the higher goals change into higher scores.
-So I choose the accuracy to be the independent variable and the score to be predictor.
-
 # Q15. Relationship between accuracy and score
-
 As the scatter plots shown, when the accuracy data becomes higher, there are higher possibilities to win a high score. And it is similar for both home and away teams.
