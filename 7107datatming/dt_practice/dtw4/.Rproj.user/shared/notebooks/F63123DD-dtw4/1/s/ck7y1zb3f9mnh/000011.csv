@@ -1,3 +1,0 @@
-"0","library(readxl)"
-"0","rbc<-read_excel(""./data/rbc2024_clean.xlsx"",na=c(""NA"",""XX""))"
-"0","rbc"
