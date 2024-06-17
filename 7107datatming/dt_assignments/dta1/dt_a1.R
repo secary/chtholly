@@ -29,9 +29,9 @@ afl1
 
 # Q4. Adding an extra column of row numbers
 # Use mutate to add a column at the far right of the data set
-afl1<-mutate(afl1,Rownumber=c(1:18))
+afl1<-mutate(afl1,RowNum=c(1:18))
 # Then use relocate to move the new column to the far left
-afl1<-relocate(afl1,"Rownumber", .before = Team)
+afl1<-relocate(afl1,"RowNum", .before = Team)
 afl1
 
 # Q5 Data cleaning
@@ -39,7 +39,7 @@ afl1
 # Use filter to extract the rows without text data.
 afl1<-filter(afl1,Team!="testX1")
 # Make sure the row numbers are updated
-afl1<-mutate(afl1,Rownumber=c(1:17))
+afl1<-mutate(afl1,RowNum=c(1:17))
 afl1
 # Q5(b)
 # Change Team name "Adelaide" to "Port Adelaide"
