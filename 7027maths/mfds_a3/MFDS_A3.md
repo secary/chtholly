@@ -48,3 +48,42 @@ $$
 t > -12\ln(\frac{3}{4}) \approx 3.4522
 $$  
 So it would be approximately 3 minutes and 27 seconds to make the probability exceed $\frac{1}{4}$.
+
+## Assignment3 - Question 2
+### 2(a)
+$$
+\begin{align*}
+
+E[X] &= \sum_{i=1}^{n}P(X=x_i) \cdot x_i\\
+&= P(X=-4) \times (-4) + P(X=-2) \times (-2) + P(X=-1) \times P(-1) + P(X=0) \times 0 + P(X=1) \times 1\\
+&= 0.05 \times (-4) + 0.1 \times 2 + 0.15 \times -1 + 0.2 \times 0 + 0.5 \times 1\\
+&= -0.2 + -0.2 + -0.15 + 0 + 0.5\\
+&= -0.05
+
+\end{align*}
+$$
+
+### 2(b)
+$$
+\begin{align*}
+
+var(X) &= E[(X-E[X])^2]\\
+&= \sum_{i=1}^{n} P(X=x_i)\cdot(x_i-E[X])^2\\
+&= P(X=-4) \times [-4-(-0.05)]^2 + P(X=-2) \times [-2-(-0.05)]^2 + P(X=-1)\times [-1-(-0.05)]^2 + P(X=0) \times [0-(-0.05)]^2 + P(X=1) \times [1-(-0.05)]^2\\
+&= 0.05 \times (-3.95)^2 + 0.1 \times (-1.95)^2 + 0.15 \times (-0.95)^2 + 0.2 \times 0.05^2 + 0.5 \times 1.05^2\\
+&= 1.8475
+
+\end{align*}
+$$
+
+### 2(c)
+$$
+\begin{align*}
+
+var(X) &= E[X^2]-E[X]^2\\
+&= \sum_{i=1}^{n}P(X=x_i)\cdot{x_i}^2-E[X]^2\\
+&= P(X=-4)\times(-4)^2 + P(X=-2)\times(-2)^2 + P(X=-1)\times(-1)^2 + P(X=0)\times0^2 + P(X=1)\times1^2-0.05^2\\
+&= 0.05\times16 + 0.1\times4 + 0.15\times1 + 0.2\times0 + 0.5\times1 - 0.0025\\
+&= 1.8475
+\end{align*}
+$$
