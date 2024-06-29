@@ -49,37 +49,32 @@ t > -12\ln(\frac{3}{4}) \approx 3.4522
 $$  
 So it would be approximately 3 minutes and 27 seconds to make the probability exceed $\frac{1}{4}$.
 
-## Assignment3 - Question 2
+## Assignment 3 - Question 2
 ### 2(a)
 $$
 \begin{align*}
-
 E[X] &= \sum_{i=1}^{n}P(X=x_i) \cdot x_i\\
 &= P(X=-4) \times (-4) + P(X=-2) \times (-2) + P(X=-1) \times P(-1) + P(X=0) \times 0 + P(X=1) \times 1\\
 &= 0.05 \times (-4) + 0.1 \times 2 + 0.15 \times -1 + 0.2 \times 0 + 0.5 \times 1\\
 &= -0.2 + -0.2 + -0.15 + 0 + 0.5\\
 &= -0.05
-
 \end{align*}
 $$
 
-### 2(b)
+### 2(b)  
 $$
 \begin{align*}
-
 var(X) &= E[(X-E[X])^2]\\
 &= \sum_{i=1}^{n} P(X=x_i)\cdot(x_i-E[X])^2\\
 &= P(X=-4) \times [-4-(-0.05)]^2 + P(X=-2) \times [-2-(-0.05)]^2 + P(X=-1)\times [-1-(-0.05)]^2 + P(X=0) \times [0-(-0.05)]^2 + P(X=1) \times [1-(-0.05)]^2\\
 &= 0.05 \times (-3.95)^2 + 0.1 \times (-1.95)^2 + 0.15 \times (-0.95)^2 + 0.2 \times 0.05^2 + 0.5 \times 1.05^2\\
 &= 1.8475
-
 \end{align*}
 $$
 
 ### 2(c)
 $$
 \begin{align*}
-
 var(X) &= E[X^2]-E[X]^2\\
 &= \sum_{i=1}^{n}P(X=x_i)\cdot{x_i}^2-E[X]^2\\
 &= P(X=-4)\times(-4)^2 + P(X=-2)\times(-2)^2 + P(X=-1)\times(-1)^2 + P(X=0)\times0^2 + P(X=1)\times1^2-0.05^2\\
@@ -87,3 +82,66 @@ var(X) &= E[X^2]-E[X]^2\\
 &= 1.8475
 \end{align*}
 $$
+
+## Assignment 3 - Question 3
+### 3(a)
+Consider the event of the account is controlled by a bot is $X_1$, in the contrast the event of the account is controlled by a human is $X_2$. And consider the test is positive is $Y$.So according to the statement, we can learn:
+$$
+\begin{align*}
+&P(Y|X_1)=0.77\\
+&P(Y|X_2)=0.24\\
+&P(X_1)=0.68\\
+\end{align*}
+$$
+We can calculate the probabilty of the account is controlled by a human is:
+$$
+P(X_2)=1-P(X_1)=0.32  
+$$
+As the total probability:
+$$
+\begin{align*}
+P(Y)=P(Y|X_1)P(X_1)+P(Y|X_2)P(X_2)=0.77\times0.68+0.24\times0.32=0.6004
+\end{align*}
+$$
+So the probability of a positive test result $P(Y)$ is 0.6004.
+
+### 3(b)
+Consider the probability of a negative result is $P(Y^*)$, which is:
+$$
+P(Y^*)=1-P(Y)=0.3996
+$$
+The probability of an account is controlled by a human given that the test result is negative should be:
+$$
+\begin{align*}
+&P(X_2|Y^*)=\frac{P(X_2)P(Y^*|X_2)}{P(Y^*)}\\
+\end{align*}
+$$
+For the $P(Y^*|X_2)$:
+$$
+\begin{align*}
+&P(Y^*|X_2)=1-P(Y|X_2)=0.76\\
+\end{align*}
+$$
+Now we can get:
+$$
+\begin{align*}
+P(X_2|Y^*)&=\frac{P(X_2)P(Y^*|X_2)}{P(Y^*)}\\
+&=\frac{0.32\times0.76}{0.3996}\\
+&\approx0.6086
+\end{align*}
+$$
+
+## Assignment 3 - Question 4
+$$
+\begin{align*}
+FGH-H^TF^T
+&=
+\begin{bmatrix}0&-1&1\\w&-1&0\end{bmatrix} \cdot \begin{bmatrix}3&0&1\\0&x&0\\0&0&-1\end{bmatrix} \cdot \begin{bmatrix}1&0\\-2&y\\-1&z\end{bmatrix} - \begin{bmatrix}1&-2&-1\\0&y&z\end{bmatrix} \cdot \begin{bmatrix}0&w\\-1&-1\\1&0\end{bmatrix}\\
+&=\begin{bmatrix}0\cdot3+(-1)\cdot0+(-1)\cdot0&0\cdot0+(-1)\cdot x+(-1)\cdot0&0\cdot1+(-1)\cdot0+1\cdot(-1)\\w\cdot3+(-1)\cdot0+0\cdot0&w\cdot0+(-1)\cdot x+0\cdot0&w\cdot1+(-1)\cdot0+0\cdot(-1)\end{bmatrix} \cdot \begin{bmatrix}1&0\\-2&y\\-1&z\end{bmatrix} - \begin{bmatrix}1\cdot0+(-1)\cdot(-2)+(-1)\cdot1&1\cdot w+(-2)\cdot(-1)+(-1)\cdot0\\0\cdot w+y\cdot(-1)+z\cdot1&0\cdot w+y\cdot(-1)+z\cdot0\end{bmatrix}\\
+&=\begin{bmatrix}0&-x&-1\\3w&-x&w\end{bmatrix} \cdot \begin{bmatrix}1&0\\-2&y\\-1&z\end{bmatrix} - \begin{bmatrix}1&w+2\\-y+z&-y\end{bmatrix}\\
+&=\begin{bmatrix}0\cdot(-1)+(-x)\cdot(-2)+(-1)\cdot1&0\cdot0+(-x)\cdot y+(-1)\cdot z\\3w\cdot(-1)+(-x)\cdot(-2)+w\cdot1&3w\cdot0+(-x)\cdot y+w\cdot z\end{bmatrix} - \begin{bmatrix}1&w+2\\-y+z&-y\end{bmatrix}\\
+&=\begin{bmatrix}2x-1&-xy-z\\2x-2w&wz-xy\end{bmatrix} - \begin{bmatrix}1&w+2\\-y+z&-y\end{bmatrix}\\
+&=\begin{bmatrix}2x-2&-xy-z-w-2\\2x-2w+y-z&wz-xy+y\end{bmatrix}
+\end{align*}
+$$
+
