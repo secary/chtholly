@@ -65,6 +65,5 @@ arch_predict <- predict(arch_preprocess,arch_sample)
 head(arch_predict,10)
 
 # q9(d)
-ggplot(arch_predict,aes(XP))+
-  geom_histogram()
-
+ggplot(arch_sample,aes(XP)) + 
+geom_histogram(stat = 'count')
