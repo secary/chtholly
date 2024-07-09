@@ -7,11 +7,313 @@ output: pdf_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+Sys.setlocale("LC_ALL", "English")
 ```
 
-## R Markdown
+# Setup
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+```{r}
+# Load the required packages
+library(tidyverse)
+library(inspectdf)
+library(caret)
+library(moments)
+```
 
+# Q1. Loading the data
 
+```{r}
+# Your student number and calculate file number
+ysn = 1942340
+filenum <- (ysn+1) %% 3
+filenum
+# Read in the data
+arch0 <- read.csv('./data/archery_0.csv')
+head(arch0,10)
+```
 
+# Q2. Tidy up the data
+
+## Q2.(a) Replace Archers' names with id
+
+```{r}
+# Add row numbers and store the new tibble for comparison
+arch1 <- mutate(arch0,Archer = (1:555))
+arch1 <- rename(arch1,id = Archer)
+```
+
+## Q2.(b) Create experience days column
+
+```{r}
+# calculate the xp days
+arch1 <- mutate(arch1,xp = dmy('15-06-2024') - dmy(Commenced))
+arch1 <- relocate(arch1,"xp",.before = Commenced)
+```
+
+## Q2.(c) Seprate the RES data
+
+```{r}
+# extract targets numbers and arrows numbers
+arch1 <- mutate(arch1,targets = str_match(arch1$RES, 'hit (\\d+) times from (\\d+) shots')[,2])
+arch1 <- mutate(arch1,arrows = str_match(arch1$RES, 'hit (\\d+) times from (\\d+) shots')[,3])
+arch1 <- mutate(arch1,RES = NULL)
+arch1 <- relocate(arch1,"arrows",.before = targets)
+head(arch1,10)
+```
+
+# Q3. Variables Identification
+
+-   id: Categorical Ordinal\
+    The id number just indicates each archer's name and it's represented as integers which could have an implying order.\
+-   xp: Quantitative Discrete\
+    The xp column are the number of experience days of the archers. They are limited and discrete integers.\
+-   Commenced : Categorical Ordinal\
+    The commenced column are the commenced dates of the archers. They could be categorized by the same dates and be ordered by the dates.\
+-   arrows: Quantitative Discrete\
+    They are the numbers of the archers' shots, which could be any integers but no floats.\
+-   targets: Quantitative Discrete\
+    As the same to the arrows, but they are the numbers of hits.
+
+# Q4. Taming data
+
+```{r}
+# Change column titles in lower case
+arch1 <- rename(arch1,commenced = Commenced)
+# Change xp days to integers
+arch1$xp <- as.integer(arch1$xp)
+# Change commenced dates into year-month-day format
+arch1$commenced <- dmy(arch1$commenced)
+# Change id and commenced dates to factor type
+arch1$id <- as.factor(arch1$id)
+arch1$commenced <- as.factor(arch1$commenced)
+# Change arrows and targets into integers
+arch1$arrows <- as.integer(arch1$arrows)
+arch1$targets <- as.integer(arch1$targets)
+# Check is there any impossible data in the tibble
+inspect_na(arch1)
+# Check the whole tibble for strange numbers
+inspect_num(arch1)
+```
+
+We could see the xp days number with 45456 days is obviously unusual, check the data we can see the commenced dates are set into 1900-01-01. I think we should clean these dates for the next analysis.
+
+```{r}
+# Delete the commenced date with too large numbers
+arch1 <- filter(arch1,xp < 45456)
+# Check the whole tibble for strange numbers again
+inspect_num(arch1)
+# Output the tibble
+head(arch1,10)
+```
+
+# Q5. Choose the random sample
+
+```{r}
+set.seed(1942340)
+arch_sample <- sample_n(arch1,450,replace = FALSE)
+head(arch_sample,10)
+```
+
+# Q6. Calculate the accuracy
+
+```{r}
+arch_sample <- mutate(arch_sample,acc = targets/arrows)
+head(arch_sample,10)
+```
+
+-   acc: Quantitative Continuous\
+    The accuracy number could be any number between 0 and 1.
+
+# Q7. Summarize your sample
+
+```{r}
+inspect_num(arch_sample)
+```
+
+The mean for the number of days of experience is 5324.75 days, while the mean for accuracy is 0.70
+
+# Q8. Prediction with the standardised variables
+
+```{r}
+# preprocess the sample data
+arch_preprocess <- preProcess(
+  tibble(
+  xp = arch_sample$xp,
+  acc = arch_sample$acc
+))
+# predict with the preprocess data
+arch_predict <- predict(arch_preprocess,arch_sample)                      
+head(arch_predict,10)
+```
+
+# Q9. Standardised data analysis
+
+```{r}
+# Show the statistics of standardised variables
+standard_data <- tibble(
+  xp = arch_predict$xp, 
+  acc = arch_predict$acc
+)
+summary(standard_data)
+inspect_num(standard_data)
+```
+
+## Q9.(a) mean
+
+The accuracy has a higher mean.
+
+## Q9.(b) median
+
+The accuracy has a higher median.
+
+## Q9.(c) inter-quartile range
+
+As we calculated, the xp has a higher inter-quartile range.
+
+## Q9.(d) Histograms plots and skewness
+
+```{r}
+# plot the histograms of each variable
+# xp
+ggplot(arch_predict,aes(xp)) + 
+  geom_histogram()
+skewness(arch_predict$xp)
+#accuracy
+ggplot(arch_predict,aes(acc)) + 
+  geom_histogram()
+skewness(arch_predict$acc)
+```
+
+The histogram of xp is very close to symmetric distribution, with the skewness is only 0.0182.\
+But on the other hand the accuracy's histogram is obviously asymmetric, most bars are on the right side of the histogram, which with the skewness of -0.59 can also make a proof of that.
+
+# Q10. Judge the linear relationship by scatterplot
+
+```{r}
+# Plot
+ggplot(arch_sample,aes(x = xp,y = acc))+
+  geom_point()+
+  geom_smooth()
+```
+
+-   It doesn't look like a linear relationship because the trend line of the points is not a straight line. It more looks like a curve of $y = logx$.\
+-   The skewness of standardised accuracy is below 0, which means most of the accuracy are higher than median. Meanwhile the distribution of xp number is almost symmetric. So the curve of the scatter point goes flat after the accuracy data reaches median.
+
+# Q11 Box-Cox it
+## Q11.(a) Get the estimate of $\lambda$
+```{r}
+# Use BoxCoxTrans to obtain lambda, with the steps of 0.1 in range [-10,10]
+arch_sample_bc <- BoxCoxTrans(
+  y = arch_sample$acc,
+  x = arch_sample$xp,
+  lambda = seq(-10,10,0.1)
+  )
+arch_sample_bc$lambda
+```
+
+The estimate of $\lambda$ is 2.4.
+
+## Q11.(b) Box-Cox the accuracy
+```{r}
+# Predict transformation and add it into a new column
+arch_sample<- mutate(arch_sample,acc_bc = predict(arch_sample_bc,arch_sample$acc))
+head(arch_sample,10)
+```
+
+# Q12 The new scatterplot of Box-Cox transformed data
+```{r}
+# plot the scatter plot of transformed data against xp
+ggplot(arch_sample,aes(x = xp,y = acc_bc))+
+  geom_point()+
+  geom_smooth()
+# plot the histogram and get skewness
+ggplot(arch_sample,aes(acc_bc))+
+  geom_histogram()
+skewness(arch_sample$acc_bc)
+```
+
+- The trend line of scatterplot is straighter than before.
+- The skewness is below 0 but closed to 0, and the shape of the histogram is close to a symmetric distribution.
+- After the transformation, the relationship becomes much closer to linear than before.
+
+# Q13 Linear modeling it
+## Q13.(a) The eqution of linear model
+$$
+y_i = \beta_0 + \beta_1 x_i + \epsilon_i
+$$
+In this equation, $y_i$ is the response variable, in this case is the accuracy.$x_i$ is the independet variable, we could use this to predict $y_i$.  $\beta_0$ and $\beta_i$ are regression coefficients, $\beta_0$ is the intercept, $\beta_i$ is the slope. $\epsilon_i$ is the error.
+
+## Q13.(b) The equation of this case
+$$
+ACC\_BC_i = \beta_0 + \beta_i XP_i + \epsilon_i
+$$
+In this equation, replace the $y_i$ and $x_i$ with $ACC\_BC_i$ and $XP_i$, which are representing Box-Cox transformed accuracy and experience days.
+
+## Q13.(c) Build the linear model with R
+```{r}
+# Build and assign your linear model
+arch_lm <- lm(acc_bc ~ xp,arch_sample)
+# Show the statistics
+summary(arch_lm)
+# Obtain the coefficients
+as.numeric(arch_lm$coefficients)
+```
+With the coefficents, we can rewrite the equation as:
+$$
+ACC\_BC_i = -0.38 + 0.00003 XP_i + \epsilon_i
+$$
+## Q14 Assumption test
+- Linearity  
+We could look at a plot to check it.
+```{r}
+plot(arch_lm, which = 1)
+```
+
+The red line is roughly straight and the dots are evenly located up and down. So linearity would be a safe assumption.
+
+- Homoscedasticity
+We could check the assumption by plot, too.
+```{r}
+plot(arch_lm, which = 3)
+```
+
+The red line is still roughly straight and the dots are evenly spread in vertical direction. This assumption would be safe.This can prove that errors are in a normal distribution which means the errors are independent from each other.
+
+- Normality and independence
+We still check the assumption by looking at a plot.
+```{r}
+plot(arch_lm, which = 2)
+```
+
+The points are lie along the dotted line and they are concentrating in the center. And there are several dots drifting away from the line which are fine because they are less than -2 on x-axis or greater than +2 on x-axis. Based on these plots, we can assure that this model's linearity and the independence between the independent variables.
+
+# Q15 Predict it
+```{r}
+# Predict with the linear model
+pred_values <- tibble(
+  xp_years = c(2,5,10,15,20,25),
+  xp = xp_years * 365
+  )
+pred_data <- predict(arch_lm,pred_values,interval = 'confidence',level = 0.99)
+pred_values <- mutate(pred_values, fit = pred_data[,1])
+pred_values <- mutate(pred_values,lower = pred_data[,2])
+pred_values <- mutate(pred_values,upper = pred_data[,3])
+# Inverse the box-cox transformed data 
+pred_values <- mutate(
+  pred_values, 
+  fit = (fit * arch_sample_bc$lambda + 1) ^ ( 1 / arch_sample_bc$lambda)
+  )
+pred_values <- mutate(
+  pred_values,
+  lower = (lower * arch_sample_bc$lambda + 1) ^ ( 1 / arch_sample_bc$lambda)
+  )
+pred_values <- 
+  mutate(pred_values, 
+         upper = (upper * arch_sample_bc$lambda + 1) ^ ( 1 / arch_sample_bc$lambda)
+         )
+pred_values
+```
+
+# Q16 Conclusions
+- As far as my observation goes, if you define a good archer is who has the accuracy greater than 0.7, he might need 15 years of practice. And the longer time he spend the less accuracy he could add. 
+- According to the statistic data before, the median accuracy of the archers is 0.73, and the mean of accuracy is 0.70. Being greater than mean indicates he could beat most archers, but being greater than median could make him reach a better world. So I think a person needs at least 15 years of practice could make him behalves perfect in archery.

@@ -75,18 +75,6 @@ head(arch_predict,10)
 ggplot(arch_predict,aes(xp)) + 
   geom_histogram()
 skewness(arch_predict$xp)
-# commenced date
-ggplot(arch_predict,aes(commenced)) + 
-  geom_histogram()
-skewness(arch_predict$commenced)
-# arrows
-ggplot(arch_predict,aes(arrows)) + 
-  geom_histogram()
-skewness(arch_predict$arrows)
-# targets
-ggplot(arch_predict,aes(targets)) + 
-  geom_histogram()
-skewness(arch_predict$targets)
 #accuracy
 ggplot(arch_predict,aes(acc)) + 
   geom_histogram()
