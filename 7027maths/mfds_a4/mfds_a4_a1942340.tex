@@ -58,22 +58,58 @@ we could write an expression below:
     0 & 1
 \end{bmatrix}
 \]
-
+\\
 And then we could get the relationships of $a,b,c$ and $d$:
-
 \begin{numcases}{}
 a^2 + bc = 4 \\
 ab + bd = -2 \\
 ac + cd = 0 \\
 bc + d^2 = 1
 \end{numcases}
-
-from (2) and  (3), we could learn that:
+\\
+from (3), we could learn that: $ac = -cd$, if $c \neq 0$, so $a = -d$.\\
+So we can change (2) to $ab - ab = -2$ which is obviously incorrect.\\
+Then $c = 0$, which means $a$ and $d$ could be any value based on (3).\\
+But still with (1) and (4) we could obtain $a^2 = 4, d^2 = 1$,
+So $a$ could be either 2 or -2 while $d$ could be either 1 or -1. 
+And calculate (2) with all the cases, we could get:
 $$
 \begin{aligned}
-    ac &= -cd \\
-    ab &= -2 -bd
+2b + b &= -2, a = 2, d = 1\\
+2b - b &= -2, a = 2, d = -1\\
+-2b + b &= -2, a = -2, d = 1\\
+-2b - b &= -2, a = -2, d = -1
 \end{aligned}
 $$
+Consider a vector of $(a,d,b)$, which could be:
+$$
+(2,1,-\frac{2}{3}),\ (2,-1,-2),\ (-2,1,2) \ or \ (-2,-1,\frac{2}{3})
+$$
+So the matrix $A$ could be:
+$$
+\begin{bmatrix}
+    2 & -\frac{2}{3}\\
+    0 & 1
+\end{bmatrix}
+,\
+\begin{bmatrix}
+    2 & -2\\
+    0 & -1
+\end{bmatrix}
+,\
+\begin{bmatrix}
+    -2 & 2\\
+    0 & 1
+\end{bmatrix}
+or\
+\begin{bmatrix}
+    -2 & \frac{2}{3}\\
+    0 & -1
+\end{bmatrix}
+$$
+\\
+\section*{Assignment 4 - Question 2}
+
+
 
 \end{document}
