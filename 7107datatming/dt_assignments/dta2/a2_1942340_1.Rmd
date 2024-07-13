@@ -1,5 +1,5 @@
 ---
-title: "a2_1942340_1"
+title: "Data Taming Assignment 2"
 author: "Dongju Ma"
 date: "2024-07-02"
 output: pdf_document
