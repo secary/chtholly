@@ -169,4 +169,76 @@ $$
 4\delta + 6 = 10
 $$
 And we could easily get $x_1 = 7,\ \delta = 1$
+
+\section*{Assignment 4 - Question 4}
+We could check the equation of each junction:\\
+A:
+$$
+x_1 = 10 + 7 + x_4
+$$
+B:
+$$
+10 + x_3 + 3 = x_2
+$$
+C:
+$$
+7 = x_3 + x_5
+$$
+D:
+$$
+2 + x_4 + x_5 = 3 + 8
+$$
+Then we transform these equtions into $Ax = b$,\\
+first:
+\begin{align*}
+    x_1 - x_4 &= 17\\
+    x_2 - x_3 &= 13\\
+    x_3 + x_5 &= 7\\
+    x_4 + x_5 &= 9\\
+\end{align*}
+so we can obtain $A$ and $b$:
+$$
+A = 
+\begin{bmatrix}
+ 1 & 0 & 0 & -1 & 0\\
+ 0 & 1 & -1 & 0 & 0\\
+ 0 & 0 & 1 & 0 & 1\\
+ 0 & 0 & 0 & 1 & 1   
+\end{bmatrix} 
+$$
+$$
+b = 
+\begin{bmatrix}
+    17\\
+    13\\
+    7\\
+    9
+\end{bmatrix}
+$$
+So the linear system should be like:
+$$
+\begin{bmatrix}
+    1 & 0 & 0 & -1 & 0\\
+    0 & 1 & -1 & 0 & 0\\
+    0 & 0 & 1 & 0 & 1\\
+    0 & 0 & 0 & 1 & 1   
+\end{bmatrix} 
+\cdot
+\begin{bmatrix}
+    x_1\\
+    x_2\\
+    x_3\\
+    x_4\\
+    x_5
+\end{bmatrix}
+=
+\begin{bmatrix}
+    17\\
+    13\\
+    7\\
+    9
+\end{bmatrix}
+$$
+
+
 \end{document}
