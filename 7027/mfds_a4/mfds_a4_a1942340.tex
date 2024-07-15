@@ -1,0 +1,244 @@
+\documentclass{article}
+
+\usepackage{amsmath}
+\usepackage{titling}  % 引入titling宏包
+\usepackage{fontspec}
+\usepackage{xeCJK} % 如果你需要处理中文
+\usepackage{cases}   % 支持 numcases 环境
+
+% 设置中文字体
+\setCJKmainfont{SimSun}  % 使用SimSun字体（请确保已安装）
+
+% 设置主标题、副标题、作者和日期
+\title{MATHS7027 Mathematical Foundations of Data Science}
+\author{Dongju Ma}
+\date{\today}
+
+% 在主标题后添加副标题
+\posttitle{\par\end{center}\begin{center}\large Trimester 2, 2024\end{center}\vskip 0.5em}
+
+\begin{document}
+
+
+\maketitle  % 生成标题和副标题
+
+
+\section*{Assignment 4 - Question 1}
+
+Consider $A = \begin{bmatrix}
+    a & b\\
+    c & d
+\end{bmatrix}$, to make 
+$A ^ 2 = \begin{bmatrix}
+    4 & -2\\
+    0 & 1
+\end{bmatrix}$,
+we could write an expression below:
+$$
+\begin{bmatrix}
+    a & b\\
+    c & d
+\end{bmatrix}
+\cdot
+\begin{bmatrix}
+    a & b\\
+    c & d
+\end{bmatrix}
+=
+\begin{bmatrix}
+    4 & -2\\
+    0 & 1
+\end{bmatrix}
+$$
+$$
+\begin{bmatrix}
+    a^2 + bc & ab + bd\\
+    ac + cd & bc + d^2
+\end{bmatrix}
+= 
+\begin{bmatrix}
+    4 & -2\\
+    0 & 1
+\end{bmatrix}
+$$
+\\
+And then we could get the relationships of $a,b,c$ and $d$:
+\begin{numcases}{}
+a^2 + bc = 4 \\
+ab + bd = -2 \\
+ac + cd = 0 \\
+bc + d^2 = 1
+\end{numcases}
+\\
+from (3), we could learn that: $ac = -cd$, if $c \neq 0$, so $a = -d$.\\
+So we can change (2) to $ab - ab = -2$ which is obviously incorrect.\\
+Then $c = 0$, which means $a$ and $d$ could be any value based on (3).\\
+But still with (1) and (4) we could obtain $a^2 = 4, d^2 = 1$,
+So $a$ could be either 2 or -2 while $d$ could be either 1 or -1. 
+And calculate (2) with all the cases, we could get:
+
+$$
+\begin{aligned}
+2b + b &= -2, a = 2, d = 1\\
+2b - b &= -2, a = 2, d = -1\\
+-2b + b &= -2, a = -2, d = 1\\
+-2b - b &= -2, a = -2, d = -1
+\end{aligned}
+$$
+
+Consider a vector of $(a,d,b)$, which could be:
+
+$$
+(2,1,-\frac{2}{3}),\ (2,-1,-2),\ (-2,1,2) \ or \ (-2,-1,\frac{2}{3})
+$$
+
+So the matrix $A$ could be:
+
+$$
+\begin{bmatrix}
+    2 & -\frac{2}{3}\\
+    0 & 1
+\end{bmatrix}
+,\
+\begin{bmatrix}
+    2 & -2\\
+    0 & -1
+\end{bmatrix}
+,\
+\begin{bmatrix}
+    -2 & 2\\
+    0 & 1
+\end{bmatrix}
+or\
+\begin{bmatrix}
+    -2 & \frac{2}{3}\\
+    0 & -1
+\end{bmatrix}
+$$
+
+\section*{Assignment 4 - Question 2}
+
+According to $W^{-1} (X + (YZ)^{T})$ is defined, we could know $W$ has the same row number to column number so it could be invertible. 
+Assump that $W$ is an $n \times n$ matrix.\\
+Next we could learn that $X$ has the same row number and column number to $(YZ)^{T}$, as far as we know that $Y$ has 4 columns 
+and $Z$ has 5 columns, so $Z$ should have 4 rows and 5 columns to make $YZ$ is defined. Since $X$ has 3 columns and could be added to 
+$YZ^{T}$, so $YZ^{T}$ should have 3 columns, which means $Y$ has 3 rows and 4 columns, and $YZ^{T}$ should be a $5 \times 3$ matrix.\\
+So we can learn $X + (YZ)^{T}$ is a $5 \times 3$ matrix, and $W$ should have the same columns to the rows of $X + (YZ)^{T}$ which means 
+$W$ is a $5\times 5$ matrix.\\
+To make conclusions:
+\begin{align*}
+    W:\ 5 \times 5\\
+    X:\ 5 \times 3\\
+    Y:\ 3 \times 4\\
+    Z:\ 4 \times 5 
+\end{align*}
+
+\section*{Assignment 4 - Question 3}
+
+\large{\textbf{3(a)}}\\
+Consider $\delta = 4$, we could obtain that:
+\begin{align}
+    x_1 + 4x_2 = 10\\
+    x_1 - 2x_2 = 4  
+\end{align}
+Doulbe the formula (6) and add it to (5) then we could get:
+$$
+(1 + 2) x_1 = 18
+$$
+which lead to $x_1 = 6$\\
+then put it into (5), we could obtain$x_2 = 1$.
+\\
+\large{\textbf{3(b)}}\\
+To find the value of $\delta$, we could change the system to the following form:
+\begin{align*}
+    x_1 &= - \delta x_2 + 10\\
+    x_1 &= 2 x_2 + \delta
+\end{align*}
+If the coeffcient of both $x_2$ in the two equtions are equal, that means the lines of the two equtions are parallel which 
+leads to the no solutions of this system.
+So the $\delta$ should be -2.
+\\
+\large{\textbf{3(c)}}\\
+Substract $x_2 = 3$ into the equtions,
+\begin{align*}
+    x_1 + 3 \delta &= 10\\
+    x_1 - 6 &= \delta
+\end{align*}
+With $x_1 = \delta + 6$, the first eqution would be:
+$$
+4\delta + 6 = 10
+$$
+And we could easily get $x_1 = 7,\ \delta = 1$
+
+\section*{Assignment 4 - Question 4}
+We could check the equation of each junction:\\
+A:
+$$
+x_1 = 10 + 7 + x_4
+$$
+B:
+$$
+10 + x_3 + 3 = x_2
+$$
+C:
+$$
+7 = x_3 + x_5
+$$
+D:
+$$
+2 + x_4 + x_5 = 3 + 8
+$$
+Then we transform these equtions into $Ax = b$,\\
+first:
+\begin{align*}
+    x_1 - x_4 &= 17\\
+    x_2 - x_3 &= 13\\
+    x_3 + x_5 &= 7\\
+    x_4 + x_5 &= 9\\
+\end{align*}
+so we can obtain $A$ and $b$:
+$$
+A = 
+\begin{bmatrix}
+ 1 & 0 & 0 & -1 & 0\\
+ 0 & 1 & -1 & 0 & 0\\
+ 0 & 0 & 1 & 0 & 1\\
+ 0 & 0 & 0 & 1 & 1   
+\end{bmatrix} 
+$$
+$$
+b = 
+\begin{bmatrix}
+    17\\
+    13\\
+    7\\
+    9
+\end{bmatrix}
+$$
+So the linear system should be like:
+$$
+\begin{bmatrix}
+    1 & 0 & 0 & -1 & 0\\
+    0 & 1 & -1 & 0 & 0\\
+    0 & 0 & 1 & 0 & 1\\
+    0 & 0 & 0 & 1 & 1   
+\end{bmatrix} 
+\cdot
+\begin{bmatrix}
+    x_1\\
+    x_2\\
+    x_3\\
+    x_4\\
+    x_5
+\end{bmatrix}
+=
+\begin{bmatrix}
+    17\\
+    13\\
+    7\\
+    9
+\end{bmatrix}
+$$
+
+
+\end{document}
