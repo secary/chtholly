@@ -1,0 +1,829 @@
+---
+title: "Data Taming R reminder sheet"
+author: "Bill S. Preston Esq."
+date: "`r Sys.Date()`"
+output:
+  pdf_document:
+    number_sections: true
+---
+
+# Setup
+
+## Initialising `knitr`
+
+* This first code chunk will execute, but not display in the output because of the option `include=FALSE` in the definition of the code chunk.
+
+`knitr` general options:
+
+* `message=FALSE` when setting the `knitr` general options to suppress messages when loading the packages later in the file.
+* `results=FALSE` to suppress output. (Change this to `results=TRUE` to see the output.)
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message=FALSE, results=FALSE, warning=FALSE)
+```
+
+## Loading packages
+
+```{r tidyverse}
+library(tidyverse)
+library(inspectdf)
+library(lubridate)
+library(caret)
+library(moments)
+library(tidymodels)
+library(ISLR)
+library(car)
+```
+
+# Loading data
+
+* Use `<-` to assign new datasets and variables
+
+## Data already in the library
+
+```{r}
+data("mpg")
+mpg1<-mpg
+```
+
+
+## Read in a `csv` file
+
+```{r}
+pop1<- read_csv("population.csv")
+```
+
+# Displaying data
+
+## Displaying data frames and tibbles
+
+```{r}
+mpg1 # Prints the first 10 lines
+print(n=10, mpg) # Also prints the first 10 lines
+head(mpg1, 9) # Also prints the first 9 lines
+tail(mpg1, 8) # Prints the final 8 lines
+View(mpg1) # This command will display data in a new window
+```
+
+## To show the number of rows and columns of the data
+
+* `dim()` gives a list of the form `[\# rows, \# columns]`
+
+```{r}
+dim(mpg)
+```
+
+* To just find the number of rows use `nrow()`
+
+```{r}
+nrow(mpg)
+```
+
+* To just find the number of columns use `ncol()`
+
+```{r}
+ncol(mpg)
+```
+
+
+## To access a particular column
+
+```{r}
+mpg1$cyl
+```
+
+# Extracting data
+
+## Extracting columns
+```{r}
+select(mpg, cyl:fl)
+```
+
+## Extracting specific row numbers
+```{r}
+mpg[5,]
+```
+
+## Extracting specific values
+
+### Just keeping the value
+
+```{r}
+mpg[5,]$trans
+class(mpg[5,]$trans)
+```
+
+### Putting the value into its own new tibble
+
+```{r}
+mpg[5,"trans"]
+class(mpg[5,"trans"])
+```
+
+## Extracting rows that match a TRUE/FALSE condition
+```{r}
+filter(mpg, displ==3.1)
+filter(mpg, between(mpg$displ,2.8,3.1))
+```
+
+# Missing data
+
+## To check if there are any missing values in any columns
+
+```{r}
+inspect_na(starwars)
+```
+
+## Finding missing values in a specific column
+
+* This returns a boolean list of TRUE/FALSE indicating the rows with missing data.
+
+* This can be combined with the filter() command
+
+```{r}
+is.na(starwars$species)
+```
+
+
+# Manipulating data
+
+## Sorting a column
+
+```{r}
+arrange(mpg, displ)
+```
+
+
+## `mutate()` To add, change or remove columns
+
+* Add column to right of dataset
+  - `mutate(dataset, new_column_name = value)`
+
+```{r}
+mutate(mpg1, IDnum=c(1:234))
+mutate(mpg1, cty_hwy_avg=(cty -hwy)/2)
+```
+
+* Delete a column
+  - `mutate(dataset, existing_column_name = NULL)`
+
+```{r}
+mutate(mpg1, model=NULL)
+```
+
+* Change a column
+  - `mutate(dataset, existing_column_name = value)`
+
+```{r}
+mutate(mpg, displ=displ*10)
+```
+
+## `rename()` to rename a column
+
+* Use the syntax `rename(dataset, new_column_name=old_column_name)`
+
+```{r}
+rename(mpg, displacement=displ)
+```
+
+
+## `relocate()` to move a column
+
+* Move a column "before" (to the left) of another column
+
+```{r}
+relocate(mpg, "cyl", .before = model)
+```
+
+* Move a column "after" (to the right) of another column
+
+```{r}
+relocate(mpg, "cyl", .after = cty)
+```
+
+## Grouping rows
+
+* Group a set of rows together based on the values in one of the columns. Eg. this will group all the cars together by their number of cylinders.
+
+* This can be used with the `summarise()` command to computer statistics for each group.
+
+```{r}
+group_by(mpg,cyl)
+```
+
+
+
+## Change data types
+
+* Convert to factor (nominal categorical variable)
+
+```{r}
+mpg1$cyl<-as.factor(mpg1$cyl)
+```
+
+* Convert to ordered factor (ordinal categorical variable)
+
+```{r}
+mpg1$cyl<-as.ordered(mpg1$cyl)
+#This next bit of code will change the order of the levels
+mpg1$cyl<-factor(mpg1$cyl, levels=c("5", "8", "4", "6"), ordered=TRUE)
+```
+
+* Convert to numerical variable
+
+```{r}
+mpg1$cyl<-as.numeric(mpg1$cyl)
+```
+
+* Convert to integer variable
+
+```{r}
+mpg1$cyl<-as.integer(mpg1$cyl)
+```
+
+* Convert to character string
+
+```{r}
+mpg1$cyl<-as.character(mpg1$cyl)
+```
+
+* Convert to logical/Boolean variable
+
+  - First need a column of TRUE/FALSE or 1/0
+
+```{r}
+mpg2<-mutate(mpg1, tf="TRUE")
+mpg2$tf<-as.logical(mpg2$tf)
+```
+
+* Convert to date object
+
+  - Using `lubridate` package commands `ymd` or `dmy`
+
+```{r}
+mpg2<-mutate(mpg1,date="2025-10-05")
+mpg2$date<-ymd(mpg2$date)
+mpg2<-mutate(mpg1,date="05-10-2025")
+mpg2$date<-dmy(mpg2$date)
+```
+
+## Rename entries in column
+
+* Using `fct_recode(mpg$drv, "new1"="old1", "new2"="old2", "new3"="old3")`
+* Only works when column is a factor or character string
+* Also converts column to `factor` type
+
+```{r}
+fct_recode(mpg$drv, "front"="f", "4x4"="4", "rear"="r")
+```
+
+# Control structures
+
+## Decisions
+
+The `ifelse` command has syntax: `ifelse(condition, return if true, return if false)`
+
+```{r}
+ifelse(10==0,1,0)
+ifelse(mpg$cyl==4,mpg$cyl,-99)
+```
+
+This can be combined with `mutate()` to selectively modify tibbles:
+```{r}
+mutate(mpg, take4=ifelse(mpg$cyl==4,mpg$cyl,-99))
+```
+
+
+## Loops
+
+* R is a vectorised progamming language, and so it is not optimised for loops. Therefore we do not use loops in this course, and you must find another way to achieve your goal.
+
+
+
+# A sequence of numbers
+
+```{r}
+1:50
+```
+
+## A sequence of numbers with step size
+
+To define a sequence from $a$ to $b$ with steps of size $s$, use: `seq(a,b,s)`
+```{r}
+seq(5,8,0.05)
+```
+
+
+# Random sampling
+
+## Random sampling from a tibble
+
+* Use `sample_n()`
+
+* Uniformly at random choose 20 rows with replacement
+
+```{r}
+sample_n(mpg, 20, replace=TRUE)
+```
+
+* Uniformly at random choose 20 rows without replacement
+
+```{r}
+sample_n(mpg, 20, replace=FALSE)
+```
+
+## Generating a list of random numbers
+
+* Use `sample()`
+
+* Generate 7 random integers from 1 to 50 with replacement
+
+```{r}
+sample(1:50, 7, replace = TRUE)
+```
+
+* Generate 7 random integers from 1 to 50 without replacement
+
+```{r}
+sample(1:50, 7, replace = FALSE)
+```
+
+## Setting the seed for a random number generation
+
+```{r}
+set.seed(1234)
+```
+
+
+# Character string manipulation
+
+## Special characters
+
+When using regular expressions you need the following commands for special characters:
+
+* \$: use `\\$`
+
+* (: use `\\(`
+
+
+## Joining (concatenating) strings
+
+* These commands `paste0` and `str_c` seem to do the same thing
+
+```{r}
+middle<-"middle bit;"
+paste0("first bit;",middle, " last bit")
+str_c("first bit;", middle, " last bit")
+```
+
+
+## Extracting numbers from strings
+
+* To extract numbers from strings use regular expressions. Eg. `(\\d+)`
+
+```{r}
+df  <- tibble(
+  treatment = c("A", "B", "C"), 
+  response = c(12, 11, 10),
+  some_text1 = c("abc 7", "abc 2", "abc 5"),
+  some_text2 = c("abc 7 xyz 9", "abc 1 xyz 21", "abc 0 xyz 2"),
+  some_text3 = c("abc 7 xyz 9", "abc -2 xyz 21", "abc 0.5 xyz 2")
+)
+str_match(df$some_text1, "abc (\\d+)")
+```
+
+* Also works for extracting multiple values from a string
+
+```{r}
+str_match(df$some_text2, "abc (\\d+) xyz (\\d+)")
+```
+
+* Only works for positive integers
+
+```{r}
+str_match(df$some_text3, "abc (\\d+) xyz (\\d+)")
+```
+
+## Extracting alphabetic characters from strings
+
+* Works for both upper and lower case letters
+
+```{r}
+str_match(df$some_text2, "x([:alpha:]+)")
+```
+
+
+## Replacing parts of strings
+
+```{r}
+mpg[6,]$trans
+str_replace(mpg[6,]$trans,"a","X")
+str_replace(mpg[6,]$trans,"\\(","X")
+```
+
+### To replace all parts of the string matching the pattern
+
+```{r}
+mpg[6,]$trans
+str_replace_all(mpg[6,]$trans,"a","X")
+```
+
+# Precision
+
+* Rounding off to $n$ decimal places
+  - Note that $n$ can be zero or negative. (Experiment with it to see what it does.)
+
+```{r}
+round(15.32257,3)
+round(15.32257,-1)
+```
+
+* Rounding off to $n$ significant figures
+
+```{r}
+signif(15.32257,3)
+```
+
+
+# Statistics
+
+* Count the number of rows that match each value of one of the columns
+
+```{r}
+count(mpg,displ)
+count(mpg,drv)
+```
+
+
+* Mean
+
+```{r}
+mean(mpg$hwy)
+```
+
+* Sample standard deviation. (Note that the sample deviation uses $N-1$ in the denominator of the calculation.)
+
+```{r}
+sd(mpg$hwy)
+```
+
+* Skewness
+
+Use the `moments` package command, as some algorithms produce different results.
+
+```{r}
+moments::skewness(mpg$hwy)
+```
+
+* The inter-quartile range
+
+```{r}
+IQR(mpg$hwy)
+```
+
+
+## Statistics on grouped data
+
+* We can use the statistics commands via the `summarise()` command, which is especially useful for working with grouped data
+
+```{r}
+summarise(mpg, mean_hwy = mean(hwy))
+summarise(group_by(mpg,cyl), mean_hwy = mean(hwy))
+```
+
+
+## Summary statistics
+
+* Calculate summary statistics for all numerical variables we can use `inspect_num()`
+
+```{r}
+inspect_num(mpg)
+```
+
+
+
+## Building formulae
+
+* To write a formula we put the response variable on the left of $\sim$ and the predictors on the right. Eg. `y ~ x + z`.
+
+* We can include interaction between our predictors with the colon ":". Eg. ` y ~ x + z + x:z`
+
+* The easy way to write a formula with all individual terms and second-order interactions as predictors is `y ~ .^2`.
+  - For example, if we have a set of predictors `x1, x2, x3` then `y ~ .^2` is equivalent to `y ~ x1 + x2 + x3 + x1:x2 + x1:x3 + x2:x3`
+
+## Linear models
+
+```{r}
+df<- tibble(
+  x=c(1:20),
+  y=x+rnorm(20,0,2)
+)
+df_lm<-lm(y~x,df)
+summary(df_lm)
+```
+
+* Extracting the model coefficients
+
+```{r}
+as.numeric(df_lm$coefficients)
+```
+
+
+### Graphs for checking assumptions of linear models
+
+```{r}
+plot(df_lm, which=1)
+plot(df_lm, which=3)
+plot(df_lm, which=2)
+```
+
+### Predicting with linear models
+
+**(Note that the explanatory values used for the prediction must be stored in a tibble/dataframe.)**
+
+* Prediction with prediction interval of level 85\%
+
+```{r}
+pred_values<-tibble(
+  x=c(2.5, 7.2)
+)
+predict(df_lm, pred_values, interval="prediction", level = 0.85)
+```
+
+* Prediction with confidence interval of level 99\%
+
+```{r}
+predict(df_lm, pred_values, interval="confidence", level = 0.99)
+```
+
+## Logistic models
+
+* We first make a binary categorical variable in a data set
+
+```{r}
+car_seats <- as_tibble(Carseats)
+car_seats
+car_seats <- car_seats %>% 
+  mutate("sales_high"=ifelse(Sales>8,"high","low"), .after = Sales)
+car_seats$sales_high <- factor(car_seats$sales_high)
+car_seats_1 <- car_seats %>% 
+  mutate(Sales=NULL)
+```
+
+### Building the model
+
+```{r}
+classification_lr <- logistic_reg() %>%
+  set_engine("glm")
+lrfit <- classification_lr %>%
+  fit(sales_high ~ Price, data = car_seats_1)
+```
+
+### Predicting with the logistic model
+
+```{r}
+predict(lrfit, new_data=car_seats_1)
+predict(lrfit, new_data=car_seats_1, type="prob")
+```
+
+## Extracting the model data for general linear models
+
+* Summary of the model
+
+```{r}
+summary(lrfit$fit)
+```
+
+* Just the coefficients
+
+```{r}
+as.numeric(lrfit$fit$coefficients)
+```
+
+## Analysis of variance
+
+```{r}
+Anova(lrfit$fit)
+```
+
+
+# Data transforms
+
+## Standardising the variables
+
+To apply standardisation to our variables (centring and dividing by the standard deviation) we can use the command `preProcess()` in conjunction with `predict()`
+
+```{r}
+mpg_preprocess  <- preProcess(mpg)
+predict(mpg_preprocess, mpg)
+```
+
+
+## Box-Cox transform
+
+### Finding $\lambda$ value
+
+```{r}
+df_bc<-BoxCoxTrans(y=df$y, x=df$x)
+df_bc$lambda
+```
+
+The default range for $\lambda$ is $[-2,2]$. If you want to search over a bigger range, then you can use the `seq()` command with `lambda` option.
+```{r}
+df_bc<-BoxCoxTrans(y=df$y, x=df$x, lambda=seq(-5,5,0.05))
+df_bc$lambda
+```
+
+
+### Transforming the data
+
+```{r}
+predict(df_bc,df$y)
+```
+
+
+
+# Manipulating time
+
+* Calculate the duration between two date objects in days (as a `difftime` data type)
+
+```{r}
+dmy("05-11-2028")- dmy("05-10-2025")
+```
+
+* Calculate the duration between two date objects in seconds (as a `duration` data type)
+
+```{r}
+as.duration(dmy("05-11-2028")- dmy("05-10-2025"))
+```
+
+* If you want these values as integers then wrap the commands in `as.integer()`
+
+```{r}
+as.integer(dmy("05-11-2028")- dmy("05-10-2025"))
+as.integer(as.duration(dmy("05-11-2028")- dmy("05-10-2025")))
+```
+
+
+# Cleaning data
+
+## Finding duplicates
+
+```{r}
+df<- tibble(
+  x=c(1:7,5,2),
+  y=x^2
+)
+duplicated(df)
+```
+(To use this to extract the duplicated values, see Section "Extracting rows that match a TRUE/FALSE condition".)
+
+
+# Tidying data
+
+* Convert to "long" form ("melting" your data)
+  - `gather(dataset, key= "first_new_column", value = "second_new_column", start:end)`
+
+```{r}
+data("table4a")
+table4a
+TB_cases<- gather(table4a, key = "year", value = "cases", `1999`:`2000`)
+```
+
+* Convert back to "wide" form, where
+  - `key` is the variable that you want to put as new column headings
+  - `value` is the the variable that you want to put in these new columns
+  - `spread(dataset, key= "key_column", value = "data_column")`
+
+```{r}
+spread(TB_cases, key = "year", value = "cases")
+```
+# Plotting
+
+* Scatter plot
+
+```{r}
+ggplot(mpg, aes(x=displ, y=cty))+
+  geom_point()
+```
+
+* Line plot
+
+```{r}
+ggplot(mpg, aes(x=displ, y=cty))+
+  geom_line()
+```
+
+* Box plot
+
+```{r}
+ggplot(mpg, aes(class, cty))+
+  geom_boxplot()
+```
+
+* Bar graph
+
+```{r}
+ggplot(mpg, aes(x = manufacturer)) + geom_bar()
+```
+
+This is similar to a histogram (but we should use bar charts for categorical variables, and histograms for quantitative variables)
+
+```{r}
+ggplot(mpg, aes(manufacturer))+
+  geom_histogram(stat="count")
+```
+
+## Rotating x-axis label
+
+```{r}
+ggplot(mpg, aes(x = manufacturer))+
+  geom_bar()+
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+```
+
+## Fitting lines and curves to the data
+
+* A straight trend line. Need the method "lm" (as in "linear model")
+
+```{r}
+ggplot(mpg, aes(x=displ, y=cty))+
+  geom_point()+
+  geom_smooth(method="lm")
+```
+
+* A possibly curved smoothed average line
+
+```{r}
+ggplot(mpg, aes(x=displ, y=cty))+
+  geom_point()+
+  geom_smooth()
+```
+
+# R Markdown
+
+## Writing equations
+
+* R Markdown uses Latex conventions for equations (so if you know Latex, you can just type it directly into R Markdown)
+
+* To write in-line maths (expressions in the middle of the text) use a single dollar \$ followed by your maths then a second single dollar \$. Eg. this equation $y=mx+c$ is an in-line maths expression.
+  - Note that `\(...\)` is equivalent to `$...$` and you can use either.
+  - Note that this means you can't just type a dollar symbol in R Markdown. To type a dollar symbol use `\$`. Eg. a \$10 note is blue.
+
+* To write "displayed" maths (expressions separated from the text) use a double dollar \$\$ followed by your maths, then another double dollar \$\$. Eg. this equation $$y=x^3+4x+1$$ is a "displayed" expression.
+  - Note that `\[...\]` is equivalent to `$$...$$` and you can use either. 
+
+## Writing long equations
+
+* We can use the `align` environment.
+* You end a row in the equation with \\\\
+* Use an ampersand (&) to align the rows 
+* This also puts an equation number on every row of our equation
+
+\begin{align}
+y&= \alpha x^3 +4 \beta x + 3\gamma\\
+&+ 321 - \omega\\
+&= 789
+\end{align}
+
+* If you don't want the equation number, use the `align*` environment
+
+\begin{align*}
+y&= \alpha x^3 +4 \beta x + 3\gamma\\
+&+ 321 - \omega\\
+&= 789
+\end{align*}
+
+## Writing maths symbols (including Greek letters)
+
+* The easiest way to write maths symbols, including Greek letters, is to write them as in-line maths. Eg. here is an $\alpha$, here is a $\beta$, here is a $\gamma$ and here is an $\epsilon$.
+  - To type a Greek letter, type a backslash followed by the name of the letter, eg. `\alpha`, `\beta`, `\gamma`, `\epsilon`.
+
+* To put a "hat" on a maths symbol write `\hat{<symbol>}`. Eg. here is a regular $\alpha$ and here is alpha-hat $\hat{\alpha}$ using `\hat{\alpha}`.
+
+* To write subscripts use an underscore{} after the symbol `<symbol>_{subscript}`. Eg. here is a regular $\alpha$ and here is $\alpha_{1,2}$ using `\alpha_{1,2}`
+  - If you've only got a single character in the subscript, then you don't need the curly brackets `{}`, but it's good practice to use them anyway. Eg. here is a regular $\alpha$ and here is $\alpha_1$ (no curly brackets) and here is $\alpha_{1}$ (with curly brackets).
+
+### Some other symbols
+
+* Approximation: `\approx`, ie. $\approx$
+
+
+
+## Including R output in your text
+
+* To include some numerical output from R directly into your knitted text use `` `r knitr::inline_expr("<variable name>")` ``
+
+```{r}
+v_1 <- 10.5324
+```
+
+Then we can print the value of the variable `r v_1`.
+
+* To include the numerical output in an an equation, just do the same thing inside \$, or \$\$ or the `align` environments
+
+Our variable is $v_1=`r v_1`$, or we could write
+\begin{align*}
+y &= v_1 \alpha \\
+&= `r v_1` \alpha 
+\end{align*}
