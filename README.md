@@ -1,25 +1,16 @@
-# UOA_2024T2
-## Practice and Assignments of Tri 2 2024, mostly ipynb and r ##
+# Chtholly Nota Seniorious
+The Master degree of Data Science in the university of Adelaide program's Materials
+## Pearl Habour
+* Means the 2nd trimester of 2024
+* Begins from May 
+* ### 7210 Foundations of Computer Science A
+* Mainly Ipynb files of assignments, with section test submission files.  
+* ### 7027 Mathematical Foundations of Data Science
+* The assignments of this trimester.
+* Assignments are written in tex files and submitted by pdf.
+* ### 7107 Data Taming
+* This course is about use basic statistic models to process data.
+* Mainly use R studio
+* Add files of R projects by assignment path and practice path.
 
-* The description of the flie holder's name could be the number of courses plus courses' names non-officially. For example ***7210CS***.  
-* 文件夹命名采用课程代码+课名形式，课名不需要全称。例：***7210CS***.
 
-* Follow standard conventions of commit messages, like  
-***Title*** `(In the first line)`  
-***Description of Changes*** `(In the second line)`  
-***Issue  <u>#Codename</u>*** `(The kast line, codenames in the table below)`
-
-* Commit message 采用标准写法,如下  
-***标题*** `第一行`  
-***更改变动描述*** `第二行`  
-***事件代号*** `最后一行，代号在下方表里`
-
-* Issue Codenames  
-
-| Issue    | Codename |Code Number|
-| :-----------: | :-----------: |:-----------: |
-|Assignment issues| #Abukuma|#0316
-|Bug fix| #Shiranui |#0621
-|Assignment Finalised|#Yamato|#0808|
-|Personal issues|#Uguru|#0515|
-|`README.md` releases| #Yona |#0929
