@@ -30,19 +30,6 @@ summary(msleep$sleep_total)
 median <- tibble(filter(msleep, sleep_total == 10.10))
 
 
-mpg
-lm_cty <- lm(cty ~ displ, mpg)
-summary(lm_cty)
-
-ggplot(mpg,aes(x = displ, y = cty))+
-  geom_point()+
-  geom_smooth(method = 'lm')
-
-pred_value <- tibble(displ = 1.9)
-predict(lm_cty,pred_value,interval = 'confidence', 0.99)
-predict(lm_cty,pred_value,interval = 'prediction', 0.95)
-predict(lm_cty,pred_value,interval = 'confidence', 0.9)
-
 lm_m <- lm(cty ~ displ+drv,mpg)
 summary(lm_m)
 pred_value <- tibble(displ = 1.9,drv = 'f')
