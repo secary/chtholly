@@ -5,6 +5,7 @@
 \usepackage{fontspec}
 \usepackage{xeCJK}  % 如果你需要处理中文
 \usepackage{cases}  % 支持numcases环境
+\usepackage{pdfpages}
 
 % 设置主标题、副标题、作者和日期
 \title{MATHS7027 Mathematical Foundations of Data Science Assignment 5}
@@ -350,6 +351,14 @@ $$
     (R_1 = \frac{1}{2}R_1)
 \end{aligned}
 $$
+so $P^{-1}$ should be 
+$$
+\begin{bmatrix}
+    -1 & -\frac{1}{2} & \frac{3}{2} \\
+    -2 & -\frac{1}{2} & \frac{3}{2} \\
+    2 & 1 & -2 
+\end{bmatrix}
+$$
 \subsection*{3(b)}
 As $C$ is diagonal, we could get:
 $$
@@ -381,15 +390,54 @@ D^{n} =
 $$
 So $C^{n}$ should be
 $$
-C^{n}
-= PD^{n}P^{-1}
-= 
-P
-\begin{bmatrix}
-    1 & 0 & 0 \\
-    0 & 0 & 0 \\
-    0 & 0 & c^{n}
-\end{bmatrix}
-P^{-1}
+\begin{aligned}
+    C^{n}
+    = PD^{n}P^{-1}
+    &= 
+    P
+    \begin{bmatrix}
+        1 & 0 & 0 \\
+        0 & 0 & 0 \\
+        0 & 0 & c^{n}
+    \end{bmatrix}
+    P^{-1}
+    \\
+    &=
+    \begin{bmatrix}
+        1 & -1 & 0 \\
+        2 & 2 & 3 \\
+        2 & 0 & 1 
+    \end{bmatrix}
+    \begin{bmatrix}
+        1 & 0 & 0 \\
+        0 & 0 & 0 \\
+        0 & 0 & c^{n}
+    \end{bmatrix}
+    \begin{bmatrix}
+        -1 & -\frac{1}{2} & \frac{3}{2} \\
+        -2 & -\frac{1}{2} & \frac{3}{2} \\
+        2 & 1 & -2 
+    \end{bmatrix}
+    \\
+    &=
+    \begin{bmatrix}
+        1 & 0 & 0 \\
+        2 & 0 & 3c^{n} \\
+        2 & 0 & c^{n}
+    \end{bmatrix}
+    \begin{bmatrix}
+        -1 & -\frac{1}{2} & \frac{3}{2} \\
+        -2 & -\frac{1}{2} & \frac{3}{2} \\
+        2 & 1 & -2 
+    \end{bmatrix}
+    \\
+    &=
+    \begin{bmatrix}
+        -1 & -\frac{1}{2} & \frac{3}{2} \\
+        -2 + 6c^n & -1 + 3c^n & 3 - 6c^n \\
+        -2 + 2c^n & -1 + c^n & 3 - 2c^n
+    \end{bmatrix}
+\end{aligned}
 $$
+\includepdf[pages=-]{MFDS_A5_Q4.pdf}
 \end{document}
